@@ -115,7 +115,7 @@ export function CodePreview({ content, fileName, onCopy, className }: CodePrevie
                 if (node.properties) {
                   node.properties.class = cn(
                     node.properties.class,
-                    "!bg-transparent !p-0 !m-0 text-sm leading-6 overflow-visible",
+                    "bg-transparent! p-0! m-0! text-sm leading-6 overflow-visible",
                   )
                 }
               },

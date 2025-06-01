@@ -146,14 +146,14 @@ export function BaultSidebar({
   }
 
   return (
-    <Sidebar className="border-r border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <Sidebar className="border-r border-border/40 bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60">
       <SidebarHeader className="p-6 border-b border-border/40">
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg group-hover:shadow-xl transition-all duration-200">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-blue-500 to-purple-600 text-white shadow-lg group-hover:shadow-xl transition-all duration-200">
             <HardDrive className="h-5 w-5" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+            <span className="text-xl font-bold bg-linear-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
               Bault
             </span>
             <span className="text-xs text-muted-foreground">File Manager</span>
@@ -161,7 +161,7 @@ export function BaultSidebar({
         </Link>
       </SidebarHeader>
 
-      <SidebarContent className="flex-grow px-4 py-6">
+      <SidebarContent className="grow px-4 py-6">
         {/* Quick Actions */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
@@ -170,7 +170,7 @@ export function BaultSidebar({
           <SidebarGroupContent className="space-y-2">
             <Button
               onClick={onNewFolder}
-              className="w-full justify-start rounded-xl h-11 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
+              className="w-full justify-start rounded-xl h-11 bg-linear-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
             >
               <FolderPlus className="mr-3 h-4 w-4" />
               New Folder
@@ -274,7 +274,7 @@ export function BaultSidebar({
                       )}
                       <span className="flex-1 text-sm font-medium">{filter.title}</span>
                       <Badge
-                        variant={isActive ? "default" : "outline"}
+                        variant={isActive ? "default" : "outline-solid"}
                         className={cn("rounded-full text-xs", isActive && "bg-blue-600 text-white border-blue-600")}
                       >
                         {count}
@@ -301,7 +301,7 @@ export function BaultSidebar({
             <SidebarMenuButton className="rounded-xl h-14 px-4 hover:bg-muted/50 transition-all duration-200">
               <Avatar className="h-9 w-9 mr-3 ring-2 ring-border/20">
                 <AvatarImage src="/placeholder-user.jpg" alt="User Avatar" />
-                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm font-semibold">
+                <AvatarFallback className="bg-linear-to-br from-blue-500 to-purple-600 text-white text-sm font-semibold">
                   JD
                 </AvatarFallback>
               </Avatar>

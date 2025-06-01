@@ -108,7 +108,7 @@ export function BulkActionsBar({
     <div
       className={cn(
         "fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50",
-        "bg-background/95 backdrop-blur-sm border border-border/40 rounded-2xl shadow-xl",
+        "bg-background/95 backdrop-blur-xs border border-border/40 rounded-2xl shadow-xl",
         "px-4 py-3 flex items-center gap-3",
         "animate-in slide-in-from-bottom-2 duration-300",
         "max-w-[90vw] min-w-[320px]",
@@ -159,7 +159,7 @@ export function BulkActionsBar({
                 onClick={() => handleAction(action.id)}
                 className={cn(
                   "rounded-lg cursor-pointer text-xs",
-                  action.variant === "destructive" && "text-red-500 hover:!text-red-500 hover:!bg-red-500/10",
+                  action.variant === "destructive" && "text-red-500 hover:text-red-500! hover:bg-red-500/10!",
                 )}
               >
                 <action.icon className="mr-2 h-3.5 w-3.5" />

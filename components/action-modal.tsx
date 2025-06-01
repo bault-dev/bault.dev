@@ -77,7 +77,7 @@ export function ActionModal({ isOpen, onClose, action, item, folders, onConfirm 
               <Button
                 onClick={handleConfirm}
                 disabled={!newName.trim()}
-                className="rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                className="rounded-xl bg-linear-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
               >
                 Rename
               </Button>
@@ -134,7 +134,7 @@ export function ActionModal({ isOpen, onClose, action, item, folders, onConfirm 
               </Button>
               <Button
                 onClick={handleConfirm}
-                className="rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
+                className="rounded-xl bg-linear-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
               >
                 Move Here
               </Button>

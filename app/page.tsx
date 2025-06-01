@@ -654,10 +654,10 @@ export default function DashboardPage() {
         currentItems={currentItems}
       />
       <SidebarInset className="flex-1">
-        <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6">
+        <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-border/40 bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60 px-6">
           <SidebarTrigger className="rounded-lg" />
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-blue-500 to-purple-600">
               <FileText className="h-4 w-4 text-white" />
             </div>
             <h1 className="text-xl font-bold">My Files</h1>
@@ -700,7 +700,7 @@ export default function DashboardPage() {
             </Button>
             <Button
               onClick={handleCreateNewFolder}
-              className="rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+              className="rounded-xl bg-linear-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
             >
               Create
             </Button>

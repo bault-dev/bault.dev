@@ -295,7 +295,7 @@ export function FileExplorer({
       onDrop={handleFilesUpload}
       onItemDrop={handleRootDrop}
       acceptsItems={true}
-      className="flex-1 p-6 md:p-8 space-y-6 bg-gradient-to-br from-background via-background to-muted/20 min-h-screen"
+      className="flex-1 p-6 md:p-8 space-y-6 bg-linear-to-br from-background via-background to-muted/20 min-h-screen"
     >
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -362,7 +362,7 @@ export function FileExplorer({
             <Input
               type="search"
               placeholder="Search files..."
-              className="w-full md:w-64 pl-10 rounded-xl border-border/40 bg-background/50 backdrop-blur"
+              className="w-full md:w-64 pl-10 rounded-xl border-border/40 bg-background/50 backdrop-blur-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -376,7 +376,7 @@ export function FileExplorer({
                 setSelectedItems(new Set())
               }
             }}
-            variant={isSelectMode ? "default" : "outline"}
+            variant={isSelectMode ? "default" : "outline-solid"}
             className="rounded-xl border-border/40 hover:bg-muted/50 transition-all duration-200"
           >
             <CheckSquare className="mr-2 h-4 w-4" />
@@ -403,7 +403,7 @@ export function FileExplorer({
           </Button>
           <Button
             asChild
-            className="rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+            className="rounded-xl bg-linear-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
           >
             <label htmlFor="file-upload" className="cursor-pointer">
               <UploadCloud className="mr-2 h-4 w-4" /> Upload File
@@ -414,7 +414,7 @@ export function FileExplorer({
       </div>
 
       {/* File Table */}
-      <Card className="border-border/40 shadow-lg rounded-2xl overflow-hidden bg-background/80 backdrop-blur">
+      <Card className="border-border/40 shadow-lg rounded-2xl overflow-hidden bg-background/80 backdrop-blur-sm">
         <Table>
           <TableHeader>
             <TableRow className="border-border/40 bg-muted/30">
@@ -583,7 +583,7 @@ export function FileExplorer({
                               e.stopPropagation()
                               handleActionClick("delete", item)
                             }}
-                            className="text-red-500 hover:!text-red-500 hover:!bg-red-500/10 rounded-lg"
+                            className="text-red-500 hover:text-red-500! hover:bg-red-500/10! rounded-lg"
                           >
                             <Trash2 className="mr-2 h-4 w-4" />
                             Delete

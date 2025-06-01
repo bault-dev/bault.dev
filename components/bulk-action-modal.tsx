@@ -147,7 +147,7 @@ export function BulkActionModal({ isOpen, onClose, action, selectedItems, folder
               </Button>
               <Button
                 onClick={handleConfirm}
-                className="rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
+                className="rounded-xl bg-linear-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
               >
                 Move Items
               </Button>
@@ -284,7 +284,7 @@ export function BulkActionModal({ isOpen, onClose, action, selectedItems, folder
               </Button>
               <Button
                 onClick={handleConfirm}
-                className="rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                className="rounded-xl bg-linear-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
               >
                 <Archive className="mr-2 h-4 w-4" />
                 Download ZIP
