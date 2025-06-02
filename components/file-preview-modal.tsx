@@ -7,9 +7,9 @@ import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CodePreview } from "./code-preview"
-import { useToast } from "@/components/ui/use-toast"
-import { X, FileText, Eye, Download, Copy } from "lucide-react"
+import { FileText, Eye, Download, Copy } from "lucide-react"
 import { getFileIcon } from "@/lib/file-icons"
+import { toast } from "sonner"
 
 interface FilePreviewModalProps {
   isOpen: boolean
@@ -29,7 +29,6 @@ export function FilePreviewModal({
   lastModified,
 }: FilePreviewModalProps) {
   const [activeTab, setActiveTab] = useState("preview")
-  const { toast } = useToast()
 
   if (!fileName || !content) return null
 
@@ -97,9 +96,9 @@ export function FilePreviewModal({
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(content)
-      toast({ title: "Copied", description: "Content copied to clipboard." })
+      toast.success("Copied", { description: "Content copied to clipboard." })
     } catch (error) {
-      toast({ title: "Error", description: "Failed to copy content.", variant: "destructive" })
+      toast.error("Error", { description: "Failed to copy content." })
     }
   }
 
@@ -113,7 +112,7 @@ export function FilePreviewModal({
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-    toast({ title: "Downloaded", description: `${fileName} has been downloaded.` })
+    toast.success("Downloaded", { description: `${fileName} has been downloaded.` })
   }
 
   const formatFileSize = (bytes?: number) => {
@@ -139,7 +138,7 @@ export function FilePreviewModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl w-[95vw] h-[90vh] flex flex-col p-0 rounded-2xl border-border/40 bg-background">
+      <DialogContent className="!max-w-6xl !w-[95vw] !h-[90vh] flex flex-col p-0 rounded-2xl border-border/40 bg-background">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border/40 bg-muted/20 shrink-0">
           <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -169,9 +168,6 @@ export function FilePreviewModal({
               <Download className="mr-1.5 h-3.5 w-3.5" />
               <span className="hidden sm:inline">Download</span>
             </Button>
-            <Button variant="ghost" size="sm" onClick={onClose} className="rounded-lg h-8 w-8 p-0">
-              <X className="h-4 w-4" />
-            </Button>
           </div>
         </div>
 
@@ -193,17 +189,19 @@ export function FilePreviewModal({
               </div>
 
               <TabsContent value="preview" className="flex-1 mt-3 mx-0 overflow-hidden">
-                {isCodeFile ? (
-                  <div className="h-full">
-                    <CodePreview content={content} fileName={fileName} onCopy={handleCopy} className="h-full" />
-                  </div>
-                ) : (
-                  <ScrollArea className="h-full px-4">
-                    <div className="rounded-lg bg-muted/30 border border-border/40 p-4 mx-0 mb-4">
-                      <pre className="text-sm whitespace-pre-wrap break-words font-mono leading-relaxed">{content}</pre>
+                <ScrollArea className="h-full">
+                  {isCodeFile ? (
+                    <div className="px-0">
+                      <CodePreview content={content} fileName={fileName} onCopy={handleCopy} className="h-full" />
                     </div>
-                  </ScrollArea>
-                )}
+                  ) : (
+                    <div className="px-4">
+                      <div className="rounded-lg bg-muted/30 border border-border/40 p-4 mx-0 mb-4">
+                        <pre className="text-sm whitespace-pre-wrap break-words font-mono leading-relaxed">{content}</pre>
+                      </div>
+                    </div>
+                  )}
+                </ScrollArea>
               </TabsContent>
 
               <TabsContent value="raw" className="flex-1 mt-3 mx-0 overflow-hidden">

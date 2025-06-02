@@ -30,13 +30,12 @@ export interface FileIconInfo {
   label: string
 }
 
-export const getFileIcon = (fileName: string, isOpen?: boolean): FileIconInfo => {
+export const getFileIcon = (fileName: string, isFolder = false): FileIconInfo => {
   const extension = fileName.toLowerCase().split(".").pop() || ""
   const baseName = fileName.toLowerCase()
 
   // Special folder handling with more specific icons
-  if (isOpen !== undefined) {
-    // Check for special folder names
+  if (isFolder) {
     if (baseName.includes("node_modules") || baseName.includes("packages")) {
       return {
         icon: Package,
@@ -45,25 +44,22 @@ export const getFileIcon = (fileName: string, isOpen?: boolean): FileIconInfo =>
         label: "Package Folder",
       }
     }
-
     if (baseName.includes("src") || baseName.includes("source")) {
       return {
-        icon: isOpen ? FolderOpen : Folder,
+        icon: Folder,
         color: "text-blue-600 dark:text-blue-500",
         bgColor: "bg-blue-100 dark:bg-blue-900/20",
         label: "Source Folder",
       }
     }
-
     if (baseName.includes("assets") || baseName.includes("static") || baseName.includes("public")) {
       return {
-        icon: isOpen ? FolderOpen : Folder,
+        icon: Folder,
         color: "text-purple-600 dark:text-purple-500",
         bgColor: "bg-purple-100 dark:bg-purple-900/20",
         label: "Assets Folder",
       }
     }
-
     if (baseName.includes("components") || baseName.includes("ui")) {
       return {
         icon: Layers,
@@ -72,7 +68,6 @@ export const getFileIcon = (fileName: string, isOpen?: boolean): FileIconInfo =>
         label: "Components Folder",
       }
     }
-
     if (baseName.includes("config") || baseName.includes("settings")) {
       return {
         icon: Settings,
@@ -81,7 +76,6 @@ export const getFileIcon = (fileName: string, isOpen?: boolean): FileIconInfo =>
         label: "Config Folder",
       }
     }
-
     if (baseName.includes("docs") || baseName.includes("documentation")) {
       return {
         icon: FileText,
@@ -90,10 +84,9 @@ export const getFileIcon = (fileName: string, isOpen?: boolean): FileIconInfo =>
         label: "Documentation Folder",
       }
     }
-
     // Default folder
     return {
-      icon: isOpen ? FolderOpen : Folder,
+      icon: Folder,
       color: "text-yellow-600 dark:text-yellow-500",
       bgColor: "bg-yellow-100 dark:bg-yellow-900/20",
       label: "Folder",
@@ -730,17 +723,15 @@ export const getFileIcon = (fileName: string, isOpen?: boolean): FileIconInfo =>
 export function FileIcon({
   fileName,
   isFolder,
-  isOpen,
   className,
   size = "md",
 }: {
   fileName: string
   isFolder?: boolean
-  isOpen?: boolean
   className?: string
   size?: "sm" | "md" | "lg"
 }) {
-  const iconInfo = isFolder ? getFileIcon("", isOpen) : getFileIcon(fileName)
+  const iconInfo = getFileIcon(fileName, isFolder)
   const Icon = iconInfo.icon
 
   const sizeClasses = {
@@ -756,17 +747,15 @@ export function FileIcon({
 export function FileIconWithBackground({
   fileName,
   isFolder,
-  isOpen,
   className,
   size = "md",
 }: {
   fileName: string
   isFolder?: boolean
-  isOpen?: boolean
   className?: string
   size?: "sm" | "md" | "lg"
 }) {
-  const iconInfo = isFolder ? getFileIcon("", isOpen) : getFileIcon(fileName)
+  const iconInfo = getFileIcon(fileName, isFolder)
   const Icon = iconInfo.icon
 
   const sizeClasses = {

@@ -8,9 +8,9 @@ import type { FileSystemItem } from "@/lib/types"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useToast } from "@/components/ui/use-toast"
 import { FileText } from "lucide-react"
 import { FilePreviewModal } from "@/components/file-preview-modal"
+import { toast } from "sonner"
 
 const MAX_STORAGE_BYTES = 20 * 1024 * 1024 // 20MB
 
@@ -323,7 +323,6 @@ export default function DashboardPage() {
   const [isNewFolderDialogOpen, setIsNewFolderDialogOpen] = useState(false)
   const [newFolderName, setNewFolderName] = useState("")
   const [previewFile, setPreviewFile] = useState<FileSystemItem | null>(null)
-  const { toast } = useToast()
   const [fileTypeFilter, setFileTypeFilter] = useState<string | null>(null)
 
   useEffect(() => {
@@ -437,11 +436,7 @@ export default function DashboardPage() {
 
   const handleFileUpload = async (file: File) => {
     if (usedStorage + file.size > MAX_STORAGE_BYTES) {
-      toast({
-        title: "Storage Limit Exceeded",
-        description: "Cannot upload file, not enough storage space.",
-        variant: "destructive",
-      })
+      toast.error("Storage Limit Exceeded", { description: "Cannot upload file, not enough storage space." })
       return
     }
 
@@ -451,7 +446,7 @@ export default function DashboardPage() {
         fileContent = await file.text()
       } catch (error) {
         console.error("Error reading file content:", error)
-        toast({ title: "Error", description: "Could not read file content.", variant: "destructive" })
+        toast.error("Error", { description: "Could not read file content." })
       }
     }
 
@@ -465,7 +460,7 @@ export default function DashboardPage() {
       content: fileContent,
     }
     setFileSystemData((prev) => [...prev, newFile])
-    toast({ title: "File Uploaded", description: `${file.name} has been uploaded.` })
+    toast.success("File Uploaded", { description: `${file.name} has been uploaded.` })
   }
 
   const handleFilesUpload = async (files: FileList) => {
@@ -477,11 +472,7 @@ export default function DashboardPage() {
     }
 
     if (usedStorage + totalSize > MAX_STORAGE_BYTES) {
-      toast({
-        title: "Storage Limit Exceeded",
-        description: "Cannot upload files, not enough storage space.",
-        variant: "destructive",
-      })
+      toast.error("Storage Limit Exceeded", { description: "Cannot upload files, not enough storage space." })
       return
     }
 
@@ -510,15 +501,12 @@ export default function DashboardPage() {
     }
 
     setFileSystemData((prev) => [...prev, ...newFiles])
-    toast({
-      title: "Files Uploaded",
-      description: `${fileArray.length} file${fileArray.length > 1 ? "s" : ""} uploaded successfully.`,
-    })
+    toast.success("Files Uploaded", { description: `${fileArray.length} file${fileArray.length > 1 ? "s" : ""} uploaded successfully.` })
   }
 
   const handleCreateNewFolder = () => {
     if (!newFolderName.trim()) {
-      toast({ title: "Invalid Name", description: "Folder name cannot be empty.", variant: "destructive" })
+      toast.error("Invalid Name", { description: "Folder name cannot be empty." })
       return
     }
     const newFolder: FileSystemItem = {
@@ -531,7 +519,7 @@ export default function DashboardPage() {
     setFileSystemData((prev) => [...prev, newFolder])
     setIsNewFolderDialogOpen(false)
     setNewFolderName("")
-    toast({ title: "Folder Created", description: `Folder "${newFolder.name}" has been created.` })
+    toast.success("Folder Created", { description: `Folder "${newFolder.name}" has been created.` })
   }
 
   const handleItemClick = (item: FileSystemItem) => {
@@ -541,10 +529,7 @@ export default function DashboardPage() {
       if (isTextFile(item.name) && typeof item.content === "string") {
         setPreviewFile(item)
       } else if (isTextFile(item.name) && typeof item.content !== "string") {
-        toast({
-          title: "Preview Unavailable",
-          description: `Content for ${item.name} is not available or couldn't be read.`,
-        })
+        toast.error("Preview Unavailable", { description: `Content for ${item.name} is not available or couldn't be read.` })
       } else {
         // For non-text files, still show the preview modal but it will show "not available"
         setPreviewFile(item)
@@ -575,14 +560,14 @@ export default function DashboardPage() {
     }
 
     setFileSystemData((prev) => prev.filter((item) => !itemsToRemove.includes(item.id)))
-    toast({ title: "Item Deleted", description: `${itemToDelete.name} and its contents have been deleted.` })
+    toast.success("Item Deleted", { description: `${itemToDelete.name} and its contents have been deleted.` })
   }
 
   const handleRenameItem = (itemId: string, newName: string) => {
     setFileSystemData((prev) =>
       prev.map((item) => (item.id === itemId ? { ...item, name: newName, lastModified: new Date() } : item)),
     )
-    toast({ title: "Item Renamed", description: `Item renamed to "${newName}".` })
+    toast.success("Item Renamed", { description: `Item renamed to "${newName}".` })
   }
 
   const handleMoveItem = (itemId: string, targetFolderId: string | null) => {
@@ -606,21 +591,14 @@ export default function DashboardPage() {
       }
 
       if (targetFolderId === itemId || isChildFolder(targetFolderId, itemId)) {
-        toast({
-          title: "Invalid Move",
-          description: "Cannot move a folder into itself or its children.",
-          variant: "destructive",
-        })
+        toast.error("Invalid Move", { description: "Cannot move a folder into itself or its children." })
         return
       }
     }
 
     // Prevent moving to the same location
     if (item.parentId === targetFolderId) {
-      toast({
-        title: "No Change",
-        description: "Item is already in this location.",
-      })
+      toast.info("No Change", { description: "Item is already in this location." })
       return
     }
 
@@ -637,10 +615,7 @@ export default function DashboardPage() {
     const targetName = targetFolder ? targetFolder.name : "Root"
 
     console.log("Move completed:", item.name, "moved to", targetName)
-    toast({
-      title: "Item Moved",
-      description: `${item.name} moved to ${targetName}.`,
-    })
+    toast.success("Item Moved", { description: `${item.name} moved to ${targetName}.` })
   }
 
   return (

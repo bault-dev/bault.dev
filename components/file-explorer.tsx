@@ -376,7 +376,7 @@ export function FileExplorer({
                 setSelectedItems(new Set())
               }
             }}
-            variant={isSelectMode ? "default" : "outline-solid"}
+            variant={isSelectMode ? "default" : "outline"}
             className="rounded-xl border-border/40 hover:bg-muted/50 transition-all duration-200"
           >
             <CheckSquare className="mr-2 h-4 w-4" />
@@ -414,11 +414,11 @@ export function FileExplorer({
       </div>
 
       {/* File Table */}
-      <Card className="border-border/40 shadow-lg rounded-2xl overflow-hidden bg-background/80 backdrop-blur-sm">
+      <Card className="border-border/40 shadow-lg py-0 rounded-2xl overflow-hidden bg-background/80 backdrop-blur-sm">
         <Table>
           <TableHeader>
             <TableRow className="border-border/40 bg-muted/30">
-              <TableHead className="w-[50px] rounded-tl-2xl">
+              <TableHead className="w-[50px] text-muted-foreground rounded-tl-2xl px-4 h-12">
                 {isSelectMode && (
                   <input
                     type="checkbox"
@@ -430,7 +430,7 @@ export function FileExplorer({
               </TableHead>
               <TableHead
                 onClick={() => handleSort("name")}
-                className="cursor-pointer hover:bg-muted/50 transition-colors"
+                className="cursor-pointer hover:bg-muted/50 transition-colors px-4 h-12 text-muted-foreground"
               >
                 <div className="flex items-center gap-2">
                   Name
@@ -439,7 +439,7 @@ export function FileExplorer({
               </TableHead>
               <TableHead
                 onClick={() => handleSort("type")}
-                className="cursor-pointer hover:bg-muted/50 transition-colors hidden md:table-cell"
+                className="cursor-pointer hover:bg-muted/50 transition-colors hidden md:table-cell px-4 h-12 text-muted-foreground"
               >
                 <div className="flex items-center gap-2">
                   Type
@@ -448,7 +448,7 @@ export function FileExplorer({
               </TableHead>
               <TableHead
                 onClick={() => handleSort("lastModified")}
-                className="cursor-pointer hover:bg-muted/50 transition-colors hidden sm:table-cell"
+                className="cursor-pointer hover:bg-muted/50 transition-colors hidden sm:table-cell px-4 h-12 text-muted-foreground"
               >
                 <div className="flex items-center gap-2">
                   Last Modified
@@ -457,14 +457,14 @@ export function FileExplorer({
               </TableHead>
               <TableHead
                 onClick={() => handleSort("size")}
-                className="cursor-pointer hover:bg-muted/50 transition-colors text-right"
+                className="cursor-pointer hover:bg-muted/50 transition-colors text-right px-4 h-12 text-muted-foreground"
               >
                 <div className="flex items-center justify-end gap-2">
                   Size
                   {sortBy === "size" && <ArrowUpDown className="h-3 w-3" />}
                 </div>
               </TableHead>
-              <TableHead className="w-[50px] text-right rounded-tr-2xl">Actions</TableHead>
+              <TableHead className="w-[50px] text-right rounded-tr-2xl px-4 h-12 text-muted-foreground">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
