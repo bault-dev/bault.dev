@@ -16,6 +16,7 @@ interface BulkActionsBarProps {
   onBulkMove: (itemIds: string[]) => void
   onBulkDownload: (itemIds: string[]) => void
   onBulkCopy: (itemIds: string[]) => void
+  onBulkShare: (itemIds: string[]) => void
   className?: string
 }
 
@@ -55,6 +56,7 @@ export function BulkActionsBar({
   onBulkMove,
   onBulkDownload,
   onBulkCopy,
+  onBulkShare,
   className,
 }: BulkActionsBarProps) {
   const [isActionsOpen, setIsActionsOpen] = useState(false)
@@ -82,7 +84,7 @@ export function BulkActionsBar({
         console.log("Star items:", itemIds)
         break
       case "share":
-        console.log("Share items:", itemIds)
+        onBulkShare(itemIds)
         break
       case "archive":
         console.log("Create archive:", itemIds)

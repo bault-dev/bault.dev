@@ -6,14 +6,14 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Folder, Move, Trash2, Download, Archive } from "lucide-react"
+import { Folder, Move, Trash2, Download, Archive, Share2 } from "lucide-react"
 import type { FileSystemItem } from "@/lib/types"
 import { FileIcon } from "@/lib/file-icons"
 
 interface BulkActionModalProps {
   isOpen: boolean
   onClose: () => void
-  action: "move" | "delete" | "download" | null
+  action: "move" | "delete" | "download" | "share" | null
   selectedItems: FileSystemItem[]
   folders: FileSystemItem[]
   onConfirm: (data: any) => void
@@ -21,6 +21,7 @@ interface BulkActionModalProps {
 
 export function BulkActionModal({ isOpen, onClose, action, selectedItems, folders, onConfirm }: BulkActionModalProps) {
   const [selectedFolderId, setSelectedFolderId] = useState<string>("")
+  const [shareEmail, setShareEmail] = useState<string>("")
 
   const handleConfirm = () => {
     const itemIds = selectedItems.map((item) => item.id)
@@ -31,19 +32,29 @@ export function BulkActionModal({ isOpen, onClose, action, selectedItems, folder
         itemIds,
         targetFolderId: selectedFolderId || null,
       })
+      handleClose()
     } else if (action === "delete") {
       onConfirm({
         action: "delete",
         itemIds,
       })
+      handleClose()
     } else if (action === "download") {
       onConfirm({
         action: "download",
         itemIds,
       })
+      handleClose()
+    } else if (action === "share") {
+      if (!shareEmail.trim()) return
+      onConfirm({
+        action: "share",
+        itemIds,
+        email: shareEmail.trim(),
+      })
+      setShareEmail("")
+      handleClose()
     }
-
-    handleClose()
   }
 
   const handleClose = () => {
@@ -288,6 +299,70 @@ export function BulkActionModal({ isOpen, onClose, action, selectedItems, folder
               >
                 <Archive className="mr-2 h-4 w-4" />
                 Download ZIP
+              </Button>
+            </DialogFooter>
+          </>
+        )
+
+      case "share":
+        return (
+          <>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10">
+                  <Share2 className="h-5 w-5 text-blue-600" />
+                </div>
+                Share {selectedItems.length} Item{selectedItems.length !== 1 ? "s" : ""}
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-200 dark:border-blue-800">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="font-medium text-blue-700 dark:text-blue-300">Items to Share</span>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="rounded-full text-xs border-blue-300 text-blue-700">
+                      {selectedItems.length} item{selectedItems.length !== 1 ? "s" : ""}
+                    </Badge>
+                  </div>
+                </div>
+                <ScrollArea className="max-h-32">
+                  <div className="space-y-2">
+                    {selectedItems.slice(0, 5).map((item) => (
+                      <div key={item.id} className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-300">
+                        <FileIcon fileName={item.name} isFolder={item.type === "folder"} size="md" />
+                        <span className="truncate">{item.name}</span>
+                      </div>
+                    ))}
+                    {selectedItems.length > 5 && (
+                      <div className="text-xs text-blue-600 dark:text-blue-400">
+                        ... and {selectedItems.length - 5} more items
+                      </div>
+                    )}
+                  </div>
+                </ScrollArea>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Share with (email)</label>
+                <input
+                  type="email"
+                  className="rounded-xl border px-3 py-2 w-full"
+                  placeholder="user@example.com"
+                  value={shareEmail}
+                  onChange={e => setShareEmail(e.target.value)}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={handleClose} className="rounded-xl">
+                Cancel
+              </Button>
+              <Button
+                onClick={handleConfirm}
+                disabled={!shareEmail.trim()}
+                className="rounded-xl bg-linear-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+              >
+                <Share2 className="mr-2 h-4 w-4" />
+                Share
               </Button>
             </DialogFooter>
           </>

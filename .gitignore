@@ -25,3 +25,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# cursor
+.cursor
+
+# vscode
+.vscode/
+
+# github
+.github/

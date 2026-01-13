@@ -17,11 +17,11 @@ import {
 } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { StorageIndicator } from "./storage-indicator"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { FileIcon } from "@/lib/file-icons"
 import { cn } from "@/lib/utils"
 import type { FileSystemItem } from "@/lib/types"
+import { NavUser } from "@/components/nav-user"
 
 interface BaultSidebarProps {
   usedStorage: number
@@ -57,56 +57,63 @@ const navigationItems = [
   },
 ]
 
-const fileTypeFilters = [
-  {
-    id: "code",
-    title: "Code Files",
-    fileName: "component.tsx",
-    extensions: ["js", "jsx", "ts", "tsx", "py", "java", "c", "cpp", "cs", "php", "rb", "go", "rs", "swift", "kt"],
-  },
-  {
-    id: "styles",
-    title: "Stylesheets",
-    fileName: "styles.css",
-    extensions: ["css", "scss", "sass", "less"],
-  },
-  {
-    id: "documents",
-    title: "Documents",
-    fileName: "readme.md",
-    extensions: ["md", "txt", "pdf", "doc", "docx", "rtf"],
-  },
-  {
-    id: "images",
-    title: "Images",
-    fileName: "image.png",
-    extensions: ["jpg", "jpeg", "png", "gif", "svg", "webp", "bmp", "ico"],
-  },
-  {
-    id: "config",
-    title: "Config Files",
-    fileName: "package.json",
-    extensions: ["json", "yaml", "yml", "toml", "env", "ini", "conf", "config"],
-    specialCheck: (item: FileSystemItem) =>
-      item.name.includes("config") ||
-      item.name.startsWith(".env") ||
-      item.name === "package.json" ||
-      item.name === "tsconfig.json",
-  },
-  {
-    id: "data",
-    title: "Data Files",
-    fileName: "data.csv",
-    extensions: ["csv", "sql", "db", "sqlite", "xml"],
-  },
-  {
-    id: "folders",
-    title: "Folders",
-    fileName: "", // Will use folder icon
-    extensions: [],
-    isFolder: true,
-  },
-]
+const fileTypeFilters: {
+  id: string
+  title: string
+  fileName: string
+  extensions: string[]
+  isFolder?: boolean
+  specialCheck?: (item: FileSystemItem) => boolean
+}[] = [
+    {
+      id: "code",
+      title: "Code Files",
+      fileName: "component.tsx",
+      extensions: ["js", "jsx", "ts", "tsx", "py", "java", "c", "cpp", "cs", "php", "rb", "go", "rs", "swift", "kt"],
+    },
+    {
+      id: "styles",
+      title: "Stylesheets",
+      fileName: "styles.css",
+      extensions: ["css", "scss", "sass", "less"],
+    },
+    {
+      id: "documents",
+      title: "Documents",
+      fileName: "readme.md",
+      extensions: ["md", "txt", "pdf", "doc", "docx", "rtf"],
+    },
+    {
+      id: "images",
+      title: "Images",
+      fileName: "image.png",
+      extensions: ["jpg", "jpeg", "png", "gif", "svg", "webp", "bmp", "ico"],
+    },
+    {
+      id: "config",
+      title: "Config Files",
+      fileName: "package.json",
+      extensions: ["json", "yaml", "yml", "toml", "env", "ini", "conf", "config"],
+      specialCheck: (item: FileSystemItem) =>
+        item.name.includes("config") ||
+        item.name.startsWith(".env") ||
+        item.name === "package.json" ||
+        item.name === "tsconfig.json",
+    },
+    {
+      id: "data",
+      title: "Data Files",
+      fileName: "data.csv",
+      extensions: ["csv", "sql", "db", "sqlite", "xml"],
+    },
+    {
+      id: "folders",
+      title: "Folders",
+      fileName: "", // Will use folder icon
+      extensions: [],
+      isFolder: true,
+    },
+  ]
 
 export function BaultSidebar({
   usedStorage,
@@ -161,31 +168,31 @@ export function BaultSidebar({
         </Link>
       </SidebarHeader>
 
-      <SidebarContent className="grow px-4 py-6">
+      <SidebarContent className="grow px-4 py-3">
         {/* Quick Actions */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             Quick Actions
           </SidebarGroupLabel>
-          <SidebarGroupContent className="space-y-2">
+          <SidebarGroupContent className="space-y-3">
             <Button
               onClick={onNewFolder}
-              className="w-full justify-start rounded-xl h-11 bg-linear-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
+              variant="outline"
+              className="w-full justify-start rounded-xl border-border/40 hover:bg-muted/50 transition-all duration-200"
             >
-              <FolderPlus className="mr-3 h-4 w-4" />
-              New Folder
+              <FolderPlus className="mr-2 h-4 w-4" />
+              Create Folder
             </Button>
             <Button
-              variant="outline"
-              className="w-full justify-start rounded-xl h-11 border-border/40 hover:bg-muted/50 transition-all duration-200"
+              className="w-full justify-start rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
             >
-              <Upload className="mr-3 h-4 w-4" />
+              <Upload className="mr-2 h-4 w-4" />
               Upload Files
             </Button>
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator className="my-6 bg-border/40" />
+        <SidebarSeparator className="my-3 bg-border/40" />
 
         {/* Navigation */}
         <SidebarGroup>
@@ -199,11 +206,13 @@ export function BaultSidebar({
                   <SidebarMenuButton
                     asChild
                     isActive={item.isActive}
-                    className="rounded-xl h-11 px-4 hover:bg-muted/50 data-[active=true]:bg-muted data-[active=true]:text-foreground transition-all duration-200"
+                    className={cn(
+                      "rounded-lg h-8 px-3 text-sm flex items-center gap-2 transition-all duration-200 cursor-pointer hover:bg-muted/50 data-[active=true]:bg-muted data-[active=true]:text-foreground",
+                    )}
                   >
                     <Link href={item.href} className="flex items-center justify-between w-full">
                       <div className="flex items-center">
-                        <item.icon className="mr-3 h-4 w-4" />
+                        <item.icon className="mr-2 h-4 w-4" />
                         <span className="font-medium">{item.title}</span>
                       </div>
                       {item.badge && (
@@ -219,7 +228,7 @@ export function BaultSidebar({
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator className="my-6 bg-border/40" />
+        <SidebarSeparator className="my-3 bg-border/40" />
 
         {/* File Type Filters */}
         <SidebarGroup>
@@ -262,19 +271,19 @@ export function BaultSidebar({
                     <SidebarMenuButton
                       onClick={() => handleFilterClick(filter.id)}
                       className={cn(
-                        "rounded-xl h-10 px-4 hover:bg-muted/50 transition-all duration-200 cursor-pointer",
+                        "rounded-lg h-8 px-3 text-sm flex items-center gap-2 transition-all duration-200 cursor-pointer",
                         isActive &&
-                          "bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300",
+                        "bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300",
                       )}
                     >
                       {filter.isFolder ? (
-                        <FileIcon fileName="" isFolder={true} size="md" className="mr-3" />
+                        <FileIcon fileName="" isFolder={true} size="sm" className="mr-2" />
                       ) : (
-                        <FileIcon fileName={filter.fileName} size="md" className="mr-3" />
+                        <FileIcon fileName={filter.fileName} size="sm" className="mr-2" />
                       )}
                       <span className="flex-1 text-sm font-medium">{filter.title}</span>
                       <Badge
-                        variant={isActive ? "default" : "outline-solid"}
+                        variant={isActive ? "default" : "outline"}
                         className={cn("rounded-full text-xs", isActive && "bg-blue-600 text-white border-blue-600")}
                       >
                         {count}
@@ -296,22 +305,11 @@ export function BaultSidebar({
       <SidebarSeparator className="bg-border/40" />
 
       <SidebarFooter className="p-4">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton className="rounded-xl h-14 px-4 hover:bg-muted/50 transition-all duration-200">
-              <Avatar className="h-9 w-9 mr-3 ring-2 ring-border/20">
-                <AvatarImage src="/placeholder-user.jpg" alt="User Avatar" />
-                <AvatarFallback className="bg-linear-to-br from-blue-500 to-purple-600 text-white text-sm font-semibold">
-                  JD
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col items-start">
-                <span className="text-sm font-medium">Jane Doe</span>
-                <span className="text-xs text-muted-foreground">jane@example.com</span>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <NavUser user={{
+          name: "John Doe",
+          email: "john.doe@example.com",
+          avatar: "/placeholder-user.jpg"
+        }} />
       </SidebarFooter>
     </Sidebar>
   )

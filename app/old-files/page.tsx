@@ -11,13 +11,17 @@ import { Button } from "@/components/ui/button"
 import { FileText } from "lucide-react"
 import { FilePreviewModal } from "@/components/file-preview-modal"
 import { toast } from "sonner"
+import { ModeToggle } from "@/components/mode-toggle"
+import { Settings } from "lucide-react"
+import { NotificationsPopover } from "@/components/notifications-popover"
 
 const MAX_STORAGE_BYTES = 20 * 1024 * 1024 // 20MB
+const CURRENT_USER_EMAIL = "John Doe"
 
 const initialFileSystemData: FileSystemItem[] = [
-  { id: "1", name: "Documents", type: "folder", parentId: null, children: [] },
-  { id: "2", name: "Pictures", type: "folder", parentId: null, children: [] },
-  { id: "3", name: "Code", type: "folder", parentId: null, children: [] },
+  { id: "1", name: "Documents", type: "folder", parentId: null, children: [], owner: CURRENT_USER_EMAIL, starred: false },
+  { id: "2", name: "Pictures", type: "folder", parentId: null, children: [], owner: CURRENT_USER_EMAIL, starred: false },
+  { id: "3", name: "Code", type: "folder", parentId: null, children: [], owner: CURRENT_USER_EMAIL, starred: false },
   {
     id: "4",
     name: "config.json",
@@ -41,8 +45,10 @@ const initialFileSystemData: FileSystemItem[] = [
       null,
       2,
     ),
+    owner: CURRENT_USER_EMAIL,
+    starred: false,
   },
-  { id: "5", name: "My Notes", type: "folder", parentId: "1", children: [] },
+  { id: "5", name: "My Notes", type: "folder", parentId: "1", children: [], owner: CURRENT_USER_EMAIL, starred: false },
   {
     id: "6",
     name: "report.docx",
@@ -51,6 +57,8 @@ const initialFileSystemData: FileSystemItem[] = [
     size: 204800,
     lastModified: new Date(Date.now() - 86400000),
     content: "This is a sample report document. \n\nSection 1: Introduction...",
+    owner: CURRENT_USER_EMAIL,
+    starred: false,
   },
   {
     id: "7",
@@ -59,6 +67,8 @@ const initialFileSystemData: FileSystemItem[] = [
     parentId: "2",
     size: 1024000,
     lastModified: new Date(Date.now() - 172800000),
+    owner: CURRENT_USER_EMAIL,
+    starred: false,
   },
   {
     id: "8",
@@ -118,6 +128,8 @@ export function ExampleComponent({ title, onSave }: Props) {
     </Card>
   )
 }`,
+    owner: CURRENT_USER_EMAIL,
+    starred: false,
   },
   {
     id: "9",
@@ -203,6 +215,8 @@ if __name__ == "__main__":
     
     processed = processor.process_data(sample_data)
     save_to_file(processed, "output.json")`,
+    owner: CURRENT_USER_EMAIL,
+    starred: false,
   },
   {
     id: "10",
@@ -313,6 +327,8 @@ body {
     padding: 1rem;
   }
 }`,
+    owner: CURRENT_USER_EMAIL,
+    starred: false,
   },
 ]
 
@@ -458,6 +474,8 @@ export default function DashboardPage() {
       size: file.size,
       lastModified: new Date(file.lastModified),
       content: fileContent,
+      owner: CURRENT_USER_EMAIL,
+      starred: false,
     }
     setFileSystemData((prev) => [...prev, newFile])
     toast.success("File Uploaded", { description: `${file.name} has been uploaded.` })
@@ -496,6 +514,8 @@ export default function DashboardPage() {
         size: file.size,
         lastModified: new Date(file.lastModified),
         content: fileContent,
+        owner: CURRENT_USER_EMAIL,
+        starred: false,
       }
       newFiles.push(newFile)
     }
@@ -515,6 +535,8 @@ export default function DashboardPage() {
       type: "folder",
       parentId: currentFolderId,
       children: [],
+      owner: CURRENT_USER_EMAIL,
+      starred: false,
     }
     setFileSystemData((prev) => [...prev, newFolder])
     setIsNewFolderDialogOpen(false)
@@ -618,6 +640,14 @@ export default function DashboardPage() {
     toast.success("Item Moved", { description: `${item.name} moved to ${targetName}.` })
   }
 
+  const handleToggleStar = (itemId: string) => {
+    setFileSystemData((prev) =>
+      prev.map((item) =>
+        item.id === itemId ? { ...item, starred: !item.starred } : item
+      )
+    )
+  }
+
   return (
     <div className="flex min-h-screen w-full bg-background">
       <BaultSidebar
@@ -637,6 +667,14 @@ export default function DashboardPage() {
             </div>
             <h1 className="text-xl font-bold">My Files</h1>
           </div>
+          <div className="flex-1" />
+          <div className="flex items-center gap-2 ml-auto">
+            <NotificationsPopover />
+            <ModeToggle />
+            <Button variant="outline" size="icon" className="rounded-full">
+              <Settings className="h-4 w-4" />
+            </Button>
+          </div>
         </header>
         <FileExplorer
           items={currentItems}
@@ -653,6 +691,7 @@ export default function DashboardPage() {
           currentFolderId={currentFolderId}
           fileTypeFilter={fileTypeFilter}
           onClearFilter={() => setFileTypeFilter(null)}
+          onToggleStar={handleToggleStar}
         />
       </SidebarInset>
 

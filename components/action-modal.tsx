@@ -13,7 +13,7 @@ import { FileIcon } from "@/lib/file-icons"
 interface ActionModalProps {
   isOpen: boolean
   onClose: () => void
-  action: "rename" | "move" | "delete" | null
+  action: "rename" | "move" | "delete" | "share" | null
   item: FileSystemItem | null
   folders: FileSystemItem[]
   onConfirm: (data: any) => void
