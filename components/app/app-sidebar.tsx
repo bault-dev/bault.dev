@@ -17,18 +17,18 @@ export function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar className="lg:border-r-0!" collapsible="icon" {...props}>
-      <SidebarHeader className="p-4 px-3 pb-0">
+    <Sidebar className="lg:border-r-0! p-3" variant="floating" collapsible="icon" {...props}>
+      <SidebarHeader className="p-3 px-2 pb-0">
         <ProjectSwitcher />
       </SidebarHeader>
 
-      <SidebarContent className="px-3 pt-6">
+      <SidebarContent className="px-2 pt-6">
         <NavMain />
         <NavFolders />
         <NavStorage />
       </SidebarContent>
 
-      <SidebarFooter className="p-4 px-3">
+      <SidebarFooter className="p-3 px-2">
         <NavUser />
       </SidebarFooter>
     </Sidebar >

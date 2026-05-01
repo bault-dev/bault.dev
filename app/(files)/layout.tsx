@@ -12,9 +12,9 @@ export default async function FilesLayout({
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
 
   return (
-    <SidebarProvider className="bg-sidebar" defaultOpen={defaultOpen}>
+    <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar />
-      <div className="h-svh overflow-hidden lg:p-2 w-full">
+      <div className="h-svh overflow-hidden lg:p-3 lg:pl-0 w-full">
         <div className="lg:border lg:rounded-xl overflow-hidden flex flex-col items-center justify-start h-full w-full bg-background">
           <FilesHeader />
           {children}

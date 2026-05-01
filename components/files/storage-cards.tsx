@@ -1,23 +1,19 @@
 "use client";
 
-import { storageData } from "@/mock-data/files";
-import { Image, Video, FileText, Archive, File } from "lucide-react";
-
-const iconMap = {
-  Images: Image,
-  Videos: Video,
-  Documents: FileText,
-  Archives: Archive,
-  Other: File,
-};
+import { useFilesStore } from "@/store/files-store";
+import { fileCategories } from "@/lib/file-categories";
+import type { CategoryName } from "@/lib/file-categories";
+import { File } from "lucide-react";
 
 export function StorageCards() {
+  const storageData = useFilesStore((state) => state.storageStats);
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
       {storageData.breakdown.map((item) => {
-        const Icon = iconMap[item.type as keyof typeof iconMap] || File;
-        const percentage = ((item.size / storageData.total) * 100).toFixed(0);
-        
+        const catSpec = fileCategories[item.type as CategoryName];
+        const Icon = catSpec ? catSpec.icon : File;
+        const percentage = storageData.total > 0 ? ((item.size / storageData.total) * 100).toFixed(0) : "0";
+
         return (
           <div
             key={item.type}

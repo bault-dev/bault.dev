@@ -85,16 +85,17 @@ export const NavMain = () => {
 
       <SidebarGroup className="p-0">
         <SidebarGroupContent>
-          <SidebarMenu>
+          <SidebarMenu className="gap-1">
             {menuItems.map((item) => (
               <SidebarMenuItem key={item.label}>
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === item.href}
+                  className="h-9"
                   tooltip={item.label}
                 >
                   <Link href={item.href}>
-                    <item.icon className="size-4" />
+                    <item.icon />
                     <span className="text-sm">{item.label}</span>
                   </Link>
                 </SidebarMenuButton>

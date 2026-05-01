@@ -1,7 +1,8 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
+import { useState } from "react";
+import { FolderDialog } from "@/components/files/folder-dialog";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -24,12 +25,14 @@ import {
 import { cn } from "@/lib/utils";
 import { useFilesStore } from "@/store/files-store";
 import { usePathname } from "next/navigation";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 export const NavFolders = () => {
   const { folders } = useFilesStore();
   const pathname = usePathname();
 
-  const [foldersOpen, setFoldersOpen] = React.useState(true);
+  const [foldersOpen, setFoldersOpen] = useLocalStorage("bault-folders-open", true);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
     <Collapsible open={foldersOpen} onOpenChange={setFoldersOpen}>
@@ -49,7 +52,11 @@ export const NavFolders = () => {
               variant="ghost"
               size="icon"
               className="size-5 hover:bg-muted"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setDialogOpen(true);
+              }}
             >
               <PlusIcon className="size-3" />
             </Button>
@@ -57,7 +64,7 @@ export const NavFolders = () => {
         </CollapsibleTrigger>
         <CollapsibleContent>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="gap-1">
               {folders.map((folder) => (
                 <SidebarMenuItem key={folder.id}>
                   <SidebarMenuButton
@@ -85,6 +92,7 @@ export const NavFolders = () => {
           </SidebarGroupContent>
         </CollapsibleContent>
       </SidebarGroup>
+      <FolderDialog open={dialogOpen} onOpenChange={setDialogOpen} />
     </Collapsible>
   )
 }

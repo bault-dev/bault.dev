@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ModeToggle } from "@/components/mode-toggle";
 import {
@@ -11,16 +10,20 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Search, Bell, LayoutGrid, List, MoreVertical } from "lucide-react";
+import { Search, Bell, LayoutGrid, List, MoreVertical, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { useFilesStore } from "@/store/files-store";
 import { cn } from "@/lib/utils";
 import { Breadcrumb } from "./breadcrumbs";
 import { QuickActions } from "./quick-actions";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { Kbd } from "@/components/ui/kbd";
+import { AISidebar } from "@/components/ai/ai-sidebar";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 export function FilesHeader() {
-  const { searchQuery, setSearchQuery, viewMode, setViewMode } =
-    useFilesStore();
+  const { searchQuery, setSearchQuery } = useFilesStore();
+  const [viewMode, setViewMode] = useLocalStorage<"grid" | "list">("bault-view-mode", "list");
 
   return (
     <header className="flex items-center gap-2 sm:gap-3 px-3 sm:px-6 py-2 sm:py-3 border-b bg-card sticky top-0 z-10 w-full">
@@ -39,16 +42,23 @@ export function FilesHeader() {
       </div>
 
       <div className="hidden md:block relative max-w-xs">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-        <Input
-          placeholder="Search files..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-9 h-9 bg-card border"
-        />
+        <InputGroup>
+          <InputGroupInput
+            placeholder="Search files..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <InputGroupAddon>
+            <SearchIcon />
+          </InputGroupAddon>
+          <InputGroupAddon align="inline-end">
+            <Kbd>⌘</Kbd>
+            <Kbd>K</Kbd>
+          </InputGroupAddon>
+        </InputGroup>
       </div>
 
-      <div className="hidden sm:flex items-center gap-1 border rounded-lg p-0.5">
+      <div className="hidden sm:flex items-center gap-1 border rounded-lg p-px">
         <Button
           variant="ghost"
           size="icon-sm"
@@ -67,6 +77,7 @@ export function FilesHeader() {
         </Button>
       </div>
 
+      <AISidebar />
       <ModeToggle />
 
       <DropdownMenu>
