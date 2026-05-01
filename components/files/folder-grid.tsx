@@ -10,17 +10,38 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useFilesStore } from "@/store/files-store";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { toast } from "sonner";
+import { RenameDialog } from "./rename-dialog";
+import { DeleteDialog } from "./delete-dialog";
 
-export function FolderGrid() {
-  const { folders } = useFilesStore();
-  const pathname = usePathname();
+interface FolderGridProps {
+  parentId?: string;
+}
 
-  if (pathname !== "/") {
-    return null;
-  }
+export function FolderGrid({ parentId }: FolderGridProps) {
+  const { getFoldersByParent, deleteFolder, renameFolder } = useFilesStore();
+  const folders = getFoldersByParent(parentId || null);
+
+  const [renameItem, setRenameItem] = useState<{ id: string; name: string } | null>(null);
+  const [deleteItem, setDeleteItem] = useState<{ id: string; name: string } | null>(null);
+
+  const handleDelete = async () => {
+    if (deleteItem) {
+      await deleteFolder(deleteItem.id);
+      toast.success("Folder deleted");
+      setDeleteItem(null);
+    }
+  };
+
+  const handleRename = async (newName: string) => {
+    if (renameItem) {
+      await renameFolder(renameItem.id, newName);
+      toast.success("Folder renamed");
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -59,10 +80,20 @@ export function FolderGrid() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem>Open</DropdownMenuItem>
-                  <DropdownMenuItem>Rename</DropdownMenuItem>
+                  <DropdownMenuItem onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setRenameItem({ id: folder.id, name: folder.name });
+                  }}>
+                    Rename
+                  </DropdownMenuItem>
                   <DropdownMenuItem>Share</DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-destructive">
+                  <DropdownMenuItem className="text-destructive" onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setDeleteItem({ id: folder.id, name: folder.name });
+                  }}>
                     Delete
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -75,6 +106,20 @@ export function FolderGrid() {
           </Link>
         ))}
       </div>
+      <RenameDialog
+        open={!!renameItem}
+        onOpenChange={(open) => !open && setRenameItem(null)}
+        initialName={renameItem?.name || ""}
+        onRename={handleRename}
+        title="Rename Folder"
+      />
+      <DeleteDialog
+        open={!!deleteItem}
+        onOpenChange={(open) => !open && setDeleteItem(null)}
+        onConfirm={handleDelete}
+        title="Delete Folder"
+        description={`Are you sure you want to delete "${deleteItem?.name}"? This action cannot be undone.`}
+      />
     </div>
   );
 }

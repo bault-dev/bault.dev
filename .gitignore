@@ -34,3 +34,13 @@ next-env.d.ts
 
 # github
 .github/
+
+# macOS
+.DS_Store
+
+# local AI tooling
+.claude/
+.opencode/
+.agent/
+.gemini/
+.trae/

@@ -1,0 +1,1 @@
+ALTER TABLE "folder" ADD COLUMN "color" text DEFAULT '#6B7280' NOT NULL;
