@@ -62,11 +62,14 @@ export function NavUser() {
                 <AvatarImage src={session.user.image ?? undefined} alt={session.user.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div
+                data-sidebar="menu-text"
+                className="grid flex-1 text-left text-sm leading-tight"
+              >
                 <span className="truncate font-medium">{session.user.name}</span>
                 <span className="truncate text-xs">{session.user.email}</span>
               </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              <ChevronsUpDown className="ml-auto size-4" data-sidebar="menu-trailing" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent

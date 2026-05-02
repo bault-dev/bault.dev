@@ -1,6 +1,6 @@
 "use client";
 
-import { FolderClosed, MoreVertical } from "lucide-react";
+import { FolderClosed, MoreVertical, PencilLine, Share2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -79,21 +79,32 @@ export function FolderGrid({ parentId }: FolderGridProps) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>Open</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <FolderClosed />
+                    Open
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     setRenameItem({ id: folder.id, name: folder.name });
                   }}>
+                    <PencilLine />
                     Rename
                   </DropdownMenuItem>
-                  <DropdownMenuItem>Share</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Share2 />
+                    Share
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-destructive" onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setDeleteItem({ id: folder.id, name: folder.name });
-                  }}>
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setDeleteItem({ id: folder.id, name: folder.name });
+                    }}
+                  >
+                    <Trash2 />
                     Delete
                   </DropdownMenuItem>
                 </DropdownMenuContent>
