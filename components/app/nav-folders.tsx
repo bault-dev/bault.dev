@@ -78,10 +78,13 @@ export const NavFolders = () => {
                         className="size-4"
                         style={{ color: folder.color }}
                       />
-                      <span className="flex-1 text-sm truncate">
+                      <span className="flex-1 truncate text-sm" data-sidebar="menu-text">
                         {folder.name}
                       </span>
-                      <span className="text-xs text-muted-foreground">
+                      <span
+                        className="text-xs text-muted-foreground"
+                        data-sidebar="menu-trailing"
+                      >
                         {folder.filesCount}
                       </span>
                     </Link>

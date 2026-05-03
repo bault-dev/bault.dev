@@ -66,11 +66,14 @@ export function ProjectSwitcher() {
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                 <IconRenderer name={activeOrg?.logo} className="size-4" />
               </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div
+                data-sidebar="menu-text"
+                className="grid flex-1 text-left text-sm leading-tight"
+              >
                 <span className="truncate font-medium">{activeOrg?.name || "Select Project"}</span>
                 <span className="truncate text-xs">Active Workspace</span>
               </div>
-              <ChevronsUpDownIcon className="ml-auto" />
+              <ChevronsUpDownIcon className="ml-auto" data-sidebar="menu-trailing" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent

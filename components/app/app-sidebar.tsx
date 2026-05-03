@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import type * as React from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -17,7 +17,12 @@ export function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar className="lg:border-r-0! p-3" variant="floating" collapsible="icon" {...props}>
+    <Sidebar
+      className="p-3 lg:border-r-0!"
+      variant="floating"
+      collapsible="icon"
+      {...props}
+    >
       <SidebarHeader className="p-3 px-2 pb-0">
         <ProjectSwitcher />
       </SidebarHeader>
@@ -31,6 +36,6 @@ export function AppSidebar({
       <SidebarFooter className="p-3 px-2">
         <NavUser />
       </SidebarFooter>
-    </Sidebar >
+    </Sidebar>
   );
 }

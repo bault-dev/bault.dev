@@ -1,9 +1,12 @@
 "use client";
 
 import {
+  Download,
+  Eye,
   Clock,
   FolderOpen,
   MoreVertical,
+  PencilLine,
   Share2,
   Star,
   Trash2,
@@ -332,9 +335,13 @@ export function FileList({ view, folderId }: FileListProps) {
                                 });
                               }}
                             >
+                              <Eye />
                               Open
                             </DropdownMenuItem>
-                            <DropdownMenuItem>Download</DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Download />
+                              Download
+                            </DropdownMenuItem>
                             {canManage && (
                               <DropdownMenuItem
                                 onClick={(e) => {
@@ -346,6 +353,7 @@ export function FileList({ view, folderId }: FileListProps) {
                                   });
                                 }}
                               >
+                                <PencilLine />
                                 Rename
                               </DropdownMenuItem>
                             )}
@@ -360,13 +368,14 @@ export function FileList({ view, folderId }: FileListProps) {
                                   });
                                 }}
                               >
+                                <Share2 />
                                 Share
                               </DropdownMenuItem>
                             )}
                             {canManage && <DropdownMenuSeparator />}
                             {canManage && (
                               <DropdownMenuItem
-                                className="text-destructive"
+                                variant="destructive"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   e.stopPropagation();
@@ -376,6 +385,7 @@ export function FileList({ view, folderId }: FileListProps) {
                                   });
                                 }}
                               >
+                                <Trash2 />
                                 Delete
                               </DropdownMenuItem>
                             )}
@@ -577,9 +587,13 @@ export function FileList({ view, folderId }: FileListProps) {
                               });
                             }}
                           >
+                            <Eye />
                             Open
                           </DropdownMenuItem>
-                          <DropdownMenuItem>Download</DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Download />
+                            Download
+                          </DropdownMenuItem>
                           {canManage && (
                             <DropdownMenuItem
                               onClick={(e) => {
@@ -588,6 +602,7 @@ export function FileList({ view, folderId }: FileListProps) {
                                 setRenameItem({ id: file.id, name: file.name });
                               }}
                             >
+                              <PencilLine />
                               Rename
                             </DropdownMenuItem>
                           )}
@@ -599,19 +614,21 @@ export function FileList({ view, folderId }: FileListProps) {
                                 setShareItem({ id: file.id, name: file.name });
                               }}
                             >
+                              <Share2 />
                               Share
                             </DropdownMenuItem>
                           )}
                           {canManage && <DropdownMenuSeparator />}
                           {canManage && (
                             <DropdownMenuItem
-                              className="text-destructive"
+                              variant="destructive"
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
                                 setDeleteItem({ id: file.id, name: file.name });
                               }}
                             >
+                              <Trash2 />
                               Delete
                             </DropdownMenuItem>
                           )}

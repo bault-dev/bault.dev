@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
 import {
   SidebarGroup,
@@ -17,7 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   PlusIcon,
   UploadIcon,
@@ -54,7 +53,7 @@ export const NavMain = () => {
             className={cn("w-full mb-4 gap-2", buttonVariants({ variant: "outline" }))} tooltip="New"
           >
             <PlusIcon className="size-4" />
-            {state !== "collapsed" && "New"}
+            {state !== "collapsed" && <span data-sidebar="menu-text">New</span>}
           </SidebarMenuButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-48">
@@ -96,7 +95,9 @@ export const NavMain = () => {
                 >
                   <Link href={item.href}>
                     <item.icon />
-                    <span className="text-sm">{item.label}</span>
+                    <span className="text-sm" data-sidebar="menu-text">
+                      {item.label}
+                    </span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
